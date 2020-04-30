@@ -1,0 +1,65 @@
+<div class="ml-2">
+    <div class="row">
+        <div class="col-md-2">
+            <ul *ngIf="villes" class="list-group">
+                <li [ngClass]="v==currentVille?'active':''" *ngFor="let v of villes._embedded.villes" (click)="getCinemaByVille(v)" class="list-group-item  clickable">{{v.name}}</li>
+               
+              </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="card" *ngIf="cinemas">
+                <div  class="card-header">
+                   <div class="row">
+                      <p class="mt-3 mr-2"><b> List Des Cinemas :</b> </p>
+                      <ul  class="list-group list-group-horizontal">
+                        <li [ngClass]="cn==currentCenima?'active':''" *ngFor="let cn of cinemas._embedded.cinemas" (click)="getSalleByCinema(cn)" class="list-group-item list-group-item-info clickable">{{cn.name}}</li>
+                          </ul>
+                  </div>
+                 
+                </div>
+                <div class="card-body">
+                  <div *ngIf="salles" class="row">
+                      <div *ngFor="let salle of salles._embedded.salles" class="col-md-6">
+                        <h5 class="card-title text-center card-header bg-info" style="color:aliceblue">{{salle.name}} </h5>
+                        <div class="card mb-4" >
+                            <div class="row no-gutters" >
+                                <div  class="col-md-5" *ngIf="salle.projections" >
+                                <img class="bd-placeholder-img mt-3" width="100%" height="350" src="{{cinemaService.host+'imageFilm/'+salle.projections._embedded.projections[0].film?.id}}" alt="">
+                                  </div>
+                              <div class="col-md-7">
+                                <div class="card-body" >
+                                  
+                                  <p class="card-text"> </p>
+                                    
+                                    <ul  class="list-group list-group " style=" margin-top: -20px;" *ngIf="salle.projections">
+                                        <li (click)="onGetTicketPlace(pr)" *ngFor="let pr of salle.projections._embedded.projections"  class="list-group-item list-group-item-info clickable">
+                                         <p class="text-center" style="    font-size: 15px;">{{pr.seance.heureDebut }} =><b>Prix :</b> {{pr.prix}} DH</p>   
+                                        </li>
+                                          </ul>
+
+                                  </div>
+                              </div>
+                             
+                            </div>
+
+                            <div class="row" *ngIf="currenProjections">
+                              <div  *ngIf="salle.id==currenProjections==salle.id">
+                              
+                              <div class="row" *ngIf="currenProjections.tickets">
+                                <button class="btn btn-success margin" *ngFor=" let t of currenProjections.tickets._embedded.tickets">{{t.place.numero}} </button>
+                              </div>
+                              </div>
+                              </div>
+                            
+                          </div>
+
+                        
+                      </div>
+                  </div>
+                  
+                  
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
